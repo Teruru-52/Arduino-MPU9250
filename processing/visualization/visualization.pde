@@ -19,6 +19,7 @@ void setup() {
   serial.bufferUntil('\n'); // Buffer until line feed
   
   model = loadShape("mpu9250.obj");
+  //model = loadShape("mpu9250_2.obj");
   model.scale(0.2);
   
   draw();
@@ -37,7 +38,7 @@ void drawGraph(){
   pushMatrix();
   lights();
   camera(0, 0, 100, 0, 0, 0, 0, 1, 0);
-  translate(-50, 18);
+  translate(30, 18);
   
   roll = float(stringRoll);
   pitch = float(stringPitch);
@@ -45,6 +46,9 @@ void drawGraph(){
   rotateZ(yaw);
   rotateY(pitch);
   rotateX(roll);
+  //rotateX(roll);
+  //rotateY(pitch);
+  //rotateZ(yaw);
   shape(model);
   popMatrix();
   
