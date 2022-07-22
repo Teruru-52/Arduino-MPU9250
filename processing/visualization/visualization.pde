@@ -19,7 +19,7 @@ void setup() {
   serial.bufferUntil('\n'); // Buffer until line feed
   
   model = loadShape("mpu9250.obj");
-  //model.scale(0.2);
+  model.scale(0.2);
   
   draw();
 }
@@ -47,6 +47,12 @@ void drawGraph(){
   rotateX(roll);
   shape(model);
   popMatrix();
+  
+  stroke(0);
+  textSize(25);
+  text("roll = " + stringRoll, 100, 80); 
+  text("pitch = " + stringPitch, 100, 120); 
+  text("yaw = " + stringYaw, 100,160);
 }
 
 void serialEvent(Serial serial){
@@ -55,4 +61,5 @@ void serialEvent(Serial serial){
   stringYaw = serial.readStringUntil('\t'); 
   
   serial.clear(); // Clear buffer
+  drawValues = true;
 }
