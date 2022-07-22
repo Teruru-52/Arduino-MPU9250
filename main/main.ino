@@ -9,6 +9,7 @@
 MPU9250_asukiaaa mySensor;
 Madgwick MadgwickFilter;
 float aX, aY, aZ, aSqrt, gX, gY, gZ, mDirection, mX, mY, mZ;
+float roll, pitch, yaw;
 unsigned long nowTime, oldTime;
 float dt;
 int count = 0;
@@ -104,28 +105,19 @@ void loop()
   // MadgwickFilter.updateIMU(gX, gY, gZ, aX, aY, aZ, dt);
   if (count % 5 == 0)
   {
-    MadgwickFilter.printQuaternion();
+    // MadgwickFilter.printQuaternion();
 
-    // Serial.print(aX);
-    // Serial.print(", ");
-    // Serial.print(aY);
-    // Serial.print(", ");
-    // Serial.println(aZ);
+    roll = MadgwickFilter.getRollRadians();
+    pitch = MadgwickFilter.getPitchRadians();
+    yaw = MadgwickFilter.getYawRadians();
 
-    // Serial.print(gX);
-    // Serial.print(", ");
-    // Serial.print(gY);
-    // Serial.print(", ");
-    // Serial.println(gZ);
-
-    // Serial.print(mX);
-    // Serial.print(", ");
-    // Serial.print(mY);
-    // Serial.print(", ");
-    // Serial.println(mZ);
-
-    // Serial.println(dt, 5);
+    Serial.print(roll);
+    Serial.print("\t");
+    Serial.print(pitch);
+    Serial.print("\t");
+    Serial.print(yaw);
+    Serial.print("\t");
+    Serial.print("\r\n");
   }
-  // delay(10);
   count++;
 }
