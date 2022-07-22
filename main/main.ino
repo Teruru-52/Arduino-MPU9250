@@ -35,6 +35,7 @@ void setup()
   // mySensor.magXOffset = -50;
   // mySensor.magYOffset = -55;
   // mySensor.magZOffset = -10;
+  mySensor.gyroCalibrate();
 }
 
 void loop()
@@ -87,6 +88,7 @@ void loop()
     // mX = mySensor.magX();
     // mY = mySensor.magY();
     // mZ = mySensor.magZ();
+
     mySensor.magCalibrate();
     mX = mySensor.Calib_magX();
     mY = mySensor.Calib_magY();
@@ -99,10 +101,28 @@ void loop()
   }
 
   MadgwickFilter.update(gX, gY, gZ, aX, aY, aZ, mX, mY, mZ, dt);
-  if (count % 10 == 0)
+  // MadgwickFilter.updateIMU(gX, gY, gZ, aX, aY, aZ, dt);
+  if (count % 5 == 0)
   {
-    // MadgwickFilter.printQuaternion();
-    Serial.println(gZ);
+    MadgwickFilter.printQuaternion();
+
+    // Serial.print(aX);
+    // Serial.print(", ");
+    // Serial.print(aY);
+    // Serial.print(", ");
+    // Serial.println(aZ);
+
+    // Serial.print(gX);
+    // Serial.print(", ");
+    // Serial.print(gY);
+    // Serial.print(", ");
+    // Serial.println(gZ);
+
+    // Serial.print(mX);
+    // Serial.print(", ");
+    // Serial.print(mY);
+    // Serial.print(", ");
+    // Serial.println(mZ);
   }
   delay(10);
   count++;

@@ -56,6 +56,7 @@ public:
     float gyroX();
     float gyroY();
     float gyroZ();
+    void gyroCalibrate();
 
     void beginMag(uint8_t mode = MAG_MODE_CONTINUOUS_8HZ);
     void magSetMode(uint8_t mode);
@@ -89,10 +90,20 @@ private:
     float mX;
     float mY;
     float mZ;
+    float gXoffset;
+    float gYoffset;
+    float gZoffset;
 
-    BLA::Matrix<3, 3> S = {0.015749055f, 0, 0, 0, 0.0167424308f, 0, 0, 0, 0.0178118918f};
-    BLA::Matrix<3, 3> Ptrans = {0.910848301f, -0.213836132f, 0.3530290087f, -0.307570277f, 0.218723929f, 0.926045553f, 0.926045553f, 0.95206824f, -0.133454681f};
-    BLA::Matrix<3> C = {-1.316079337f, 4.165236776f, -76.78866537f};
+    BLA::Matrix<3, 3> S = {0.0138, 0, 0,
+                           0, 0.0145, 0,
+                           0, 0, 0.0158};
+    BLA::Matrix<3, 3> Ptrans = {0.9423, -0.1153, 0.3142,
+                                -0.2818, 0.2333, 0.9307,
+                                0.1806, 0.9656, -0.1874};
+    BLA::Matrix<3> C = {-1.7585,
+                        -22.1015,
+                        -76.9318};
+    BLA::Matrix<4, 2> A = {1, 2, 3, 4, 5, 6, 7, 8};
 };
 
 #endif

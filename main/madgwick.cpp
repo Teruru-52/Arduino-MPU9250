@@ -57,7 +57,7 @@ void Madgwick::update(float gx, float gy, float gz, float ax, float ay, float az
     // Use IMU algorithm if magnetometer measurement invalid (avoids NaN in magnetometer normalisation)
     if ((mx == 0.0f) && (my == 0.0f) && (mz == 0.0f))
     {
-        updateIMU(gx, gy, gz, ax, ay, az);
+        updateIMU(gx, gy, gz, ax, ay, az, dt);
         return;
     }
 
@@ -154,12 +154,13 @@ void Madgwick::update(float gx, float gy, float gz, float ax, float ay, float az
 //-------------------------------------------------------------------------------------------
 // IMU algorithm update
 
-void Madgwick::updateIMU(float gx, float gy, float gz, float ax, float ay, float az)
+void Madgwick::updateIMU(float gx, float gy, float gz, float ax, float ay, float az, float dt)
 {
     float recipNorm;
     float s0, s1, s2, s3;
     float qDot1, qDot2, qDot3, qDot4;
     float _2q0, _2q1, _2q2, _2q3, _4q0, _4q1, _4q2, _8q1, _8q2, q0q0, q1q1, q2q2, q3q3;
+    this->invSampleFreq = dt;
 
     // Convert gyroscope degrees/sec to radians/sec
     gx *= 0.0174533f;

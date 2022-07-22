@@ -52,6 +52,9 @@ MPU9250_asukiaaa::MPU9250_asukiaaa(uint8_t address) : address(address)
     magYOffset = 0;
     magZOffset = 0;
     myWire = NULL;
+    gXoffset = 0;
+    gYoffset = 0;
+    gZoffset = 0;
 }
 
 void MPU9250_asukiaaa::setWire(TwoWire *wire)
@@ -279,15 +282,39 @@ float MPU9250_asukiaaa::gyroGet(uint8_t highIndex, uint8_t lowIndex)
 
 float MPU9250_asukiaaa::gyroX()
 {
-    return gyroGet(0, 1);
+    return gyroGet(0, 1) - gXoffset;
 }
 
 float MPU9250_asukiaaa::gyroY()
 {
-    return gyroGet(2, 3);
+    return gyroGet(2, 3) - gYoffset;
 }
 
 float MPU9250_asukiaaa::gyroZ()
 {
-    return gyroGet(4, 5);
+    return gyroGet(4, 5) - gZoffset;
+}
+
+void MPU9250_asukiaaa::gyroCalibrate()
+{
+    for (int i = 0; i < 100; i++)
+    {
+        gyroUpdate();
+
+        gXoffset += gyroGet(0, 1);
+        gYoffset += gyroGet(2, 3);
+        gZoffset += gyroGet(4, 5);
+        delay(1);
+    }
+    gXoffset /= 100.0f;
+    gYoffset /= 100.0f;
+    gZoffset /= 100.0f;
+
+    // Serial << "S: " << S;
+    // Serial.println(",");
+    // Serial << "Ptrans: " << Ptrans;
+    // Serial.println(",");
+    // Serial << "C: " << C;
+    // Serial.println(",");
+    // Serial << "A: " << A;
 }

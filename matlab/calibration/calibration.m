@@ -152,3 +152,36 @@ h_axes.ZAxis.FontSize = 25;
 quiver3(0,0,0,0.5,0,0,'LineWidth',2);
 quiver3(0,0,0,0,0.5,0,'LineWidth',2);
 quiver3(0,0,0,0,0,0.5,'LineWidth',2);
+
+%% import calibrated data
+data = csvread('calib_data.csv');
+mx_calib = data(:,1);
+my_calib = data(:,2);
+mz_calib = data(:,3);
+
+%% plot
+plot3(mx_calib,my_calib,mz_calib,'.','Color','r','MarkerSize',10);
+grid on;
+hold on;
+pbaspect([1 1 1]);
+xlabel('$mX$','Interpreter','latex');
+ylabel('$mY$','Interpreter','latex');
+zlabel('$mZ$','Interpreter','latex');
+xlim([-1.5 1.5])
+ylim([-1.5 1.5])
+zlim([-1.5 1.5])
+xticks([-1.5:0.5:1.5])
+yticks([-1.5:0.5:1.5])
+zticks([-1.5:0.5:1.5])
+h_axes = gca;
+h_axes.XAxis.FontSize = 25;
+h_axes.YAxis.FontSize = 25;
+h_axes.ZAxis.FontSize = 25;
+
+quiver3(0,0,0,0.5,0,0,'LineWidth',2);
+quiver3(0,0,0,0,0.5,0,'LineWidth',2);
+quiver3(0,0,0,0,0,0.5,'LineWidth',2);
+
+quiver3(C2(1),C2(2),C2(3),p1(1),p1(2),p1(3),'LineWidth',2);
+quiver3(C2(1),C2(2),C2(3),p2(1),p2(2),p2(3),'LineWidth',2);
+quiver3(C2(1),C2(2),C2(3),p3(1),p3(2),p3(3),'LineWidth',2);

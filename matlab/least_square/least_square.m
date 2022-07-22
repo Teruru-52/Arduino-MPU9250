@@ -1,7 +1,7 @@
 %% import data
 clear
 
-data = csvread('data2.csv');
+data = csvread('data3.csv');
 mx = data(:,1);
 my = data(:,2);
 mz = data(:,3);
