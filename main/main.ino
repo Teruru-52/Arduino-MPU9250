@@ -123,7 +123,9 @@ void loop()
     // Serial.print(mY);
     // Serial.print(", ");
     // Serial.println(mZ);
+
+    // Serial.println(dt, 5);
   }
-  delay(10);
+  // delay(10);
   count++;
 }
