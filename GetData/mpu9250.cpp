@@ -182,33 +182,6 @@ float MPU9250_asukiaaa::magZ()
     return adjustMagValue(magGet(5, 4), magZAdjust) + magZOffset;
 }
 
-void MPU9250_asukiaaa::magCalibrate()
-{
-    mx = adjustMagValue(magGet(1, 0), magXAdjust) + magXOffset;
-    my = adjustMagValue(magGet(3, 2), magYAdjust) + magYOffset;
-    mz = adjustMagValue(magGet(5, 4), magZAdjust) + magZOffset;
-    BLA::Matrix<3> x = {mx, my, mz};
-    BLA::Matrix<3> X = S * (Ptrans * x + C);
-    mX = X(0);
-    mY = X(1);
-    mZ = X(2);
-}
-
-float MPU9250_asukiaaa::Calib_magX()
-{
-    return mX;
-}
-
-float MPU9250_asukiaaa::Calib_magY()
-{
-    return mY;
-}
-
-float MPU9250_asukiaaa::Calib_magZ()
-{
-    return mZ;
-}
-
 uint8_t MPU9250_asukiaaa::accelUpdate()
 {
     return i2cRead(address, MPU9250_ADDR_ACCEL_XOUT_H, 6, accelBuff);

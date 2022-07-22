@@ -7,7 +7,11 @@
 #endif
 
 MPU9250_asukiaaa mySensor;
+Madgwick MadgwickFilter;
 float aX, aY, aZ, aSqrt, gX, gY, gZ, mDirection, mX, mY, mZ;
+unsigned long nowTime, oldTime;
+float dt;
+int count = 0;
 
 void setup()
 {
@@ -19,7 +23,6 @@ void setup()
   Wire.begin(SDA_PIN, SCL_PIN);
   mySensor.setWire(&Wire);
 #endif
-
   mySensor.beginAccel();
   mySensor.beginGyro();
   Wire.beginTransmission(0x68);
@@ -36,6 +39,10 @@ void setup()
 
 void loop()
 {
+  nowTime = micros();
+  dt = (float)(nowTime - oldTime) / 1000000.0; // [µs]to[s]
+  oldTime = nowTime;
+
   uint8_t sensorId;
   int result;
 
@@ -49,58 +56,54 @@ void loop()
   //    Serial.println("Cannot read sensorId " + String(result));
   //  }
 
-  //  result = mySensor.accelUpdate();
-  //  if (result == 0)
-  //  {
-  //    aX = mySensor.accelX();
-  //    aY = mySensor.accelY();
-  //    aZ = mySensor.accelZ();
-  //    aSqrt = mySensor.accelSqrt();
-  //    Serial.println("accelX: " + String(aX));
-  //    Serial.println("accelY: " + String(aY));
-  //    Serial.println("accelZ: " + String(aZ));
-  //    Serial.println("accelSqrt: " + String(aSqrt));
-  //  }
-  //  else
-  //  {
-  //    Serial.println("Cannod read accel values " + String(result));
-  //  }
-  //
-  //  result = mySensor.gyroUpdate();
-  //  if (result == 0)
-  //  {
-  //    gX = mySensor.gyroX();
-  //    gY = mySensor.gyroY();
-  //    gZ = mySensor.gyroZ();
-  //    Serial.println("gyroX: " + String(gX));
-  //    Serial.println("gyroY: " + String(gY));
-  //    Serial.println("gyroZ: " + String(gZ));
-  //  }
-  //  else
-  //  {
-  //    Serial.println("Cannot read gyro values " + String(result));
-  //  }
+  result = mySensor.accelUpdate();
+  if (result == 0)
+  {
+    aX = mySensor.accelX();
+    aY = mySensor.accelY();
+    aZ = mySensor.accelZ();
+    aSqrt = mySensor.accelSqrt();
+  }
+  else
+  {
+    Serial.println("Cannod read accel values " + String(result));
+  }
+
+  result = mySensor.gyroUpdate();
+  if (result == 0)
+  {
+    gX = mySensor.gyroX();
+    gY = mySensor.gyroY();
+    gZ = mySensor.gyroZ();
+  }
+  else
+  {
+    Serial.println("Cannot read gyro values " + String(result));
+  }
 
   result = mySensor.magUpdate();
   if (result == 0)
   {
-    mX = mySensor.magX();
-    mY = mySensor.magY();
-    mZ = mySensor.magZ();
+    // mX = mySensor.magX();
+    // mY = mySensor.magY();
+    // mZ = mySensor.magZ();
+    mySensor.magCalibrate();
+    mX = mySensor.Calib_magX();
+    mY = mySensor.Calib_magY();
+    mZ = mySensor.Calib_magZ();
     mDirection = mySensor.magHorizDirection();
-    Serial.print(mX, 2);
-    Serial.print(", ");
-    Serial.print(mY, 2);
-    Serial.print(", ");
-    Serial.println(mZ, 2);
-    //    Serial.println(", horizontal direction: " + String(mDirection));
   }
   else
   {
     Serial.println("Cannot read mag values " + String(result));
   }
 
-  //  Serial.println("at " + String(millis()) + "ms");
-  //  Serial.println(""); // Add an empty line
-  delay(100);
+  MadgwickFilter.update(gX, gY, gZ, aX, aY, aZ, mX, mY, mZ, dt);
+  if (count % 10 == 0)
+  {
+    // MadgwickFilter.printQuaternion();
+    Serial.println(gZ);
+  }
+  delay(10);
+  count++;
 }

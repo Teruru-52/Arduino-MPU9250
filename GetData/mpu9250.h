@@ -2,7 +2,6 @@
 #define MPU9250_ASUKIAAA_H
 #include <Arduino.h>
 #include <Wire.h>
-#include "BasicLinearAlgebra.h"
 
 #define MPU9250_ADDRESS_AD0_LOW 0x68
 #define MPU9250_ADDRESS_AD0_HIGH 0x69
@@ -28,8 +27,6 @@
 #define MPU9250_BUFF_LEN_ACCEL 6
 #define MPU9250_BUFF_LEN_GYRO 6
 #define MPU9250_BUFF_LEN_MAG 7
-
-using namespace BLA;
 
 class MPU9250_asukiaaa
 {
@@ -63,10 +60,6 @@ public:
     float magX();
     float magY();
     float magZ();
-    void magCalibrate();
-    float Calib_magX();
-    float Calib_magY();
-    float Calib_magZ();
     float magHorizDirection();
 
 private:
@@ -83,16 +76,6 @@ private:
     void magWakeup();
     uint8_t i2cRead(uint8_t Address, uint8_t Register, uint8_t Nbytes, uint8_t *Data);
     uint8_t i2cWriteByte(uint8_t Address, uint8_t Register, uint8_t Data);
-    float mx;
-    float my;
-    float mz;
-    float mX;
-    float mY;
-    float mZ;
-
-    BLA::Matrix<3, 3> S = {0.015749055f, 0, 0, 0, 0.0167424308f, 0, 0, 0, 0.0178118918f};
-    BLA::Matrix<3, 3> Ptrans = {0.910848301f, -0.213836132f, 0.3530290087f, -0.307570277f, 0.218723929f, 0.926045553f, 0.926045553f, 0.95206824f, -0.133454681f};
-    BLA::Matrix<3> C = {-1.316079337f, 4.165236776f, -76.78866537f};
 };
 
 #endif
