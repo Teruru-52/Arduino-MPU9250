@@ -26,6 +26,11 @@ class Madgwick
 private:
     static float invSqrt(float x);
     float beta; // algorithm gain
+    float zeta;
+    // float gbw; // gyroscope biases
+    float gbx;
+    float gby;
+    float gbz;
     float q0;
     float q1;
     float q2;
