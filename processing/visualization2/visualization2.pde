@@ -32,7 +32,7 @@ void draw() {
 
 void drawGraph() {
   background(230);
-  //camera(0, 0, 100, 0, 0, 0, 0, 1, 0);
+  //camera(0, 1000, 1000, 0, 0, 0, 0, 1, 0);
   translate(width / 2, height / 2, 0);
   //translate(200, 180);
   
