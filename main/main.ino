@@ -63,7 +63,7 @@ void loop()
   {
     aX = mySensor.accelX();
     aY = mySensor.accelY();
-    aZ = mySensor.accelZ();
+    aZ = -mySensor.accelZ();
     aSqrt = mySensor.accelSqrt();
   }
   else
@@ -101,8 +101,8 @@ void loop()
     Serial.println("Cannot read mag values " + String(result));
   }
 
-  MadgwickFilter.update(gX, gY, gZ, aX, aY, aZ, mX, mY, mZ, dt);
-  // MadgwickFilter.updateIMU(gX, gY, gZ, aX, aY, aZ, dt);
+  // MadgwickFilter.update(gX, gY, gZ, aX, aY, aZ, mX, mY, mZ, dt);
+  MadgwickFilter.updateIMU(gX, gY, gZ, aX, aY, aZ, dt);
   if (count % 5 == 0)
   {
     // MadgwickFilter.printQuaternion();
@@ -118,6 +118,24 @@ void loop()
     Serial.print(yaw);
     Serial.print("\t");
     Serial.print("\r\n");
+
+    // Serial.println(dt, 4);
+
+    // Serial.print(gX);
+    // Serial.print("\t");
+    // Serial.print(gY);
+    // Serial.print("\t");
+    // Serial.print(gZ);
+    // Serial.print("\t");
+    // Serial.print("\r\n");
+
+    // Serial.print(aX);
+    // Serial.print("\t");
+    // Serial.print(aY);
+    // Serial.print("\t");
+    // Serial.print(aZ);
+    // Serial.print("\t");
+    // Serial.print("\r\n");
   }
   count++;
 }

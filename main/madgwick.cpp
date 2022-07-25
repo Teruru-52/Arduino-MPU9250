@@ -184,7 +184,6 @@ void Madgwick::updateIMU(float gx, float gy, float gz, float ax, float ay, float
 {
     float recipNorm;
     float s0, s1, s2, s3;
-    // float gw;
     float qDot1, qDot2, qDot3, qDot4;
     float _2q0, _2q1, _2q2, _2q3, _4q0, _4q1, _4q2, _8q1, _8q2, q0q0, q1q1, q2q2, q3q3;
     this->invSampleFreq = dt;
@@ -231,27 +230,11 @@ void Madgwick::updateIMU(float gx, float gy, float gz, float ax, float ay, float
     gy *= 0.0174533f;
     gz *= 0.0174533f;
 
-    // // compute and remove the gyroscope baises
-    // gbw += 2.0f * (q0 * s0 + q1 * s1 + q2 * s2 + q3 * s3) * invSampleFreq;
-    gbx += 2.0f * (q0 * s1 - q1 * s0 - q2 * s3 + q3 * s2) * invSampleFreq;
-    gby += 2.0f * (q0 * s2 + q1 * s3 - q2 * s0 - q3 * s1) * invSampleFreq;
-    gbz += 2.0f * (q0 * s3 - q1 * s2 + q2 * s1 - q3 * s0) * invSampleFreq;
-
-    // gw = -gbw;
-    gx -= zeta * gbx;
-    gy -= zeta * gby;
-    gz -= zeta * gbz;
-
     // Rate of change of quaternion from gyroscope
     qDot1 = 0.5f * (-q1 * gx - q2 * gy - q3 * gz);
     qDot2 = 0.5f * (q0 * gx + q2 * gz - q3 * gy);
     qDot3 = 0.5f * (q0 * gy - q1 * gz + q3 * gx);
     qDot4 = 0.5f * (q0 * gz + q1 * gy - q2 * gx);
-
-    // qDot1 = 0.5f * (q0 * gw - q1 * gx - q2 * gy - q3 * gz);
-    // qDot2 = 0.5f * (q0 * gx + q1 * gw + q2 * gz - q3 * gy);
-    // qDot3 = 0.5f * (q0 * gy - q1 * gz + q2 * gw + q3 * gx);
-    // qDot4 = 0.5f * (q0 * gz + q1 * gy - q2 * gx + q3 * gw);
 
     // Apply feedback step
     qDot1 -= beta * s0;
